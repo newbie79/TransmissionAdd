@@ -43,8 +43,8 @@ namespace TransmissionAdd
             int ret = AddMagnetLink(user.Url, user.Username, user.Password, url, out errorMessage);
             if (ret == 0)
             {
-                MessageBox.Show("등록하였습니다.",
-                    "알림", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ToastNotificationForm toastForm = new ToastNotificationForm("등록하였습니다.", 3);
+                toastForm.ShowDialog();
                 return true;
             }
             else
