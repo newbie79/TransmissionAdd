@@ -40,10 +40,11 @@ namespace TransmissionAdd
                 }
             }
 
-            int ret = AddMagnetLink(user.Url, user.Username, user.Password, url, out errorMessage);
+            string name = null;
+            int ret = AddMagnetLink(user.Url, user.Username, user.Password, url, out name, out errorMessage);
             if (ret == 0)
             {
-                ToastNotificationForm toastForm = new ToastNotificationForm("등록하였습니다.", 3);
+                ToastNotificationForm toastForm = new ToastNotificationForm(name, 5);
                 toastForm.ShowDialog();
                 return true;
             }
@@ -61,10 +62,10 @@ namespace TransmissionAdd
                         return false;
                     }
 
-                    ret = AddMagnetLink(user.Url, user.Username, user.Password, url, out errorMessage);
+                    ret = AddMagnetLink(user.Url, user.Username, user.Password, url, out name, out errorMessage);
                     if (ret == 0)
                     {
-                        ToastNotificationForm toast = new ToastNotificationForm("등록하였습니다.");
+                        ToastNotificationForm toast = new ToastNotificationForm(name, 5);
                         toast.ShowDialog();
                         return true;
                     }
@@ -130,10 +131,15 @@ namespace TransmissionAdd
         /// <summary>
         /// 마그넷 링크를 등록한다.
         /// </summary>
+        /// <param name="transmissionUrl">transmissoin url</param>
+        /// <param name="username">username</param>
+        /// <param name="password">password</param>
         /// <param name="magnetLink">magnet link</param>
+        /// <param name="errorMessage">error message</param>
         /// <returns>결과코드 (0:성공, 11:이미 등록된 마그넷 링크, 20:환경설정 오류, 99:오류 )</returns>
-        private int AddMagnetLink(string transmissionUrl, string username, string password, string magnetLink, out string errorMessage)
+        private int AddMagnetLink(string transmissionUrl, string username, string password, string magnetLink, out string name, out string errorMessage)
         {
+            name = null;
             errorMessage = null;
 
             try
@@ -155,6 +161,8 @@ namespace TransmissionAdd
                 {
                     Filename = magnetLink
                 });
+
+                name = info.Name;
 
                 return 0;
             }
