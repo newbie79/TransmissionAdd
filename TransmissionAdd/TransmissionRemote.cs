@@ -29,6 +29,12 @@ namespace TransmissionAdd
                 return false;
             }
 
+            UserConfig.Load();
+            if (UserConfig.Settings == null)
+            {
+                string d = "";
+            }
+
             Utility.CredentialUser user = Utility.CredentialManagementHelper.GetCredential();
             if (user == null)
             {
@@ -89,7 +95,7 @@ namespace TransmissionAdd
         {
             errorMessage = null;
 
-            using (var form = new ConfigForm())
+            using (var form = new ServerConfigForm())
             {
                 if (user != null)
                 {

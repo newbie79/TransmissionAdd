@@ -2,7 +2,7 @@
   "profiles": {
     "TransmissionAdd": {
       "commandName": "Project",
-      "commandLineArgs": "/a magnet:?xt=urn:btih:fabe719c4c085f038aac11b24f8506e7c653d7e8"
+      "commandLineArgs": "/config"
     }
   }
 }

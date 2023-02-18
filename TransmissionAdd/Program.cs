@@ -35,6 +35,15 @@ namespace TransmissionAdd
                 return ERROR_INVALILD_COMMAND_LINE;
             }
 
+            if (args[0].Equals("/config", StringComparison.InvariantCultureIgnoreCase))
+            {
+                using (var configFrm = new ConfigForm())
+                {
+                    configFrm.ShowDialog();
+                }
+                return ERROR_SUCCESS;
+            }
+
             TransmissionRemote transmission = new TransmissionRemote();
             bool ret = transmission.Add(args[0].Trim());
 
