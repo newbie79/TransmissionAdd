@@ -15,6 +15,8 @@ namespace TransmissionAdd
     {
         private bool _dataChanged = false;
         private ContextMenuStrip _lbServerContextMenu;
+        private List<ServerInfo> _servers = null;
+        private List<DomainInfo> _domains = null;
 
         public ConfigForm()
         {
@@ -30,6 +32,7 @@ namespace TransmissionAdd
             lbServerDelMenu.Click += lbServerDelMenu_Click;
             _lbServerContextMenu = new ContextMenuStrip();
             _lbServerContextMenu.Items.AddRange(new ToolStripItem[] { lbServerEditMenu, lbServerDelMenu });
+            lbServer.ContextMenuStrip= _lbServerContextMenu;
 
             UserConfig.Load();
 
@@ -37,14 +40,29 @@ namespace TransmissionAdd
             {
                 if (UserConfig.Settings.Servers != null)
                 {
-                    foreach (var serverInfo in UserConfig.Settings.Servers)
+                    _servers = UserConfig.Settings.Servers.ConvertAll(x => new ServerInfo()
+                    {
+                        ServerId = x.ServerId,
+                        Name = x.Name,
+                        Url = x.Url,
+                        Username = x.Username,
+                        Password = x.Password
+                    });
+
+                    foreach (var serverInfo in _servers)
                     {
                         lbServer.Items.Add(serverInfo);
                     }
                 }
                 if (UserConfig.Settings.Domains != null)
                 {
-                    foreach (var domainInfo in UserConfig.Settings.Domains)
+                    _domains = UserConfig.Settings.Domains.ConvertAll(x => new DomainInfo()
+                    {
+                        Url = x.Url,
+                        ServerId = x.ServerId
+                    });
+
+                    foreach (var domainInfo in _domains)
                     {
                         lbDomain.Items.Add(domainInfo);
                     }
@@ -64,14 +82,40 @@ namespace TransmissionAdd
             }
         }
 
+        /// <summary>
+        /// 서버 정보 수정 이벤트 핸들러
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void lbServerEditMenu_Click(object sender, EventArgs e)
         {
-
+            int index = lbServer.SelectedIndex;
+            if (index >= 0)
+            {
+                string serverId = lbServer.SelectedValue.ToString();
+                var serverInfo = UpdateServer(serverId);
+                if (serverInfo != null)
+                {
+                    lbServer.Text = serverInfo.Name;
+                }
+            }
         }
 
+        /// <summary>
+        /// 서버 정보 삭제 이벤트 핸들러
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void lbServerDelMenu_Click(object sender, EventArgs e)
         {
-
+            int index = lbServer.SelectedIndex;
+            if (index >= 0)
+            {
+                lbServer.Items.RemoveAt(index);
+                string serverId = lbServer.SelectedValue.ToString();
+                int itemIndex = _servers.FindIndex(x => serverId.Equals(x.ServerId));
+                _servers.RemoveAt(itemIndex);
+            }
         }
 
         private void btnServerAdd_Click(object sender, EventArgs e)
@@ -89,7 +133,7 @@ namespace TransmissionAdd
             {
                 if (serverId != null)
                 {
-                    form.ServerInfo = UserConfig.Settings.Servers.Find(x => x.ServerId.Equals(serverId));
+                    form.ServerInfo = _servers.Find(x => x.ServerId.Equals(serverId));
                 }
                 var result = form.ShowDialog();
 
@@ -98,7 +142,7 @@ namespace TransmissionAdd
                     _dataChanged = true;
                     if (String.IsNullOrWhiteSpace(serverId))
                     {
-                        UserConfig.Settings.Servers.Add(form.ServerInfo);
+                        _servers.Add(form.ServerInfo);
                     }
                     return form.ServerInfo;
                 }
@@ -113,6 +157,8 @@ namespace TransmissionAdd
         {
             if (_dataChanged)
             {
+                UserConfig.Settings.Servers = _servers;
+                UserConfig.Settings.Domains = _domains;
                 UserConfig.Save();
             }
 

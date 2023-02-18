@@ -56,7 +56,7 @@ namespace TransmissionAdd
                     Name = tbName.Text.Trim(),
                     Url = tbUrl.Text.Trim(),
                     Username = tbUsername.Text.Trim(),
-                    Password = tbPassword.Text.Trim()
+                    Password = Utility.Crypto.Encrypt(tbPassword.Text.Trim(), UserConfig.Settings.CryptKey)
                 };
             }
             else
@@ -64,7 +64,7 @@ namespace TransmissionAdd
                 this.ServerInfo.Name = tbName.Text.Trim();
                 this.ServerInfo.Url = tbUrl.Text.Trim();
                 this.ServerInfo.Username = tbUsername.Text.Trim();
-                this.ServerInfo.Password = tbPassword.Text.Trim();
+                this.ServerInfo.Password = Utility.Crypto.Encrypt(tbPassword.Text.Trim(), UserConfig.Settings.CryptKey);
             }
 
             this.DialogResult = DialogResult.OK;
@@ -84,6 +84,7 @@ namespace TransmissionAdd
                 tbName.Text = this.ServerInfo.Name;
                 tbUrl.Text = this.ServerInfo.Url;
                 tbUsername.Text = this.ServerInfo.Username;
+                tbPassword.Text = Utility.Crypto.Decrypt(this.ServerInfo.Password, UserConfig.Settings.CryptKey);
             }
         }
     }

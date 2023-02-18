@@ -5,7 +5,6 @@ namespace TransmissionAdd
 {
     public class UserConfig
     {
-        private static object _syncLock = new object();
         private static UserSettings _userSettings = null;
 
         public static UserSettings Settings
@@ -28,69 +27,63 @@ namespace TransmissionAdd
 
         public static void Load()
         {
-            lock (_syncLock)
+            string filepath = GetFilepath();
+
+            try
             {
-                string filepath = GetFilepath();
-
-                try
-                {
-                    string jsonString = System.IO.File.ReadAllText(filepath);
-                    _userSettings = JsonConvert.DeserializeObject<UserSettings>(jsonString);
-                }
-                catch (System.IO.DirectoryNotFoundException dirEx)
-                {
-                    string message = dirEx.Message;
-                    System.IO.Directory.CreateDirectory(GetDataFolder());
-                    System.IO.File.CreateText(GetFilepath());
-                }
-                catch (Exception ex)
-                {
-                    throw new ApplicationException(String.Format("환경설정 파일을 읽는 중 오류가 발생했습니다. ({0})", filepath), ex);
-                }
-
-                if (_userSettings == null)
-                {
-                    _userSettings = new UserSettings()
-                    {
-                        Servers = new System.Collections.Generic.List<ServerInfo>(),
-                        Domains = new System.Collections.Generic.List<DomainInfo>()
-                    };
-                }
-
-                string cryptKey = null;
-                var user = Utility.CredentialManagementHelper.GetCredential();
-                if (user == null)
-                {
-                    cryptKey = Guid.NewGuid().ToString();
-                    bool ret = Utility.CredentialManagementHelper.SetCredentials("TransmissionAdd", cryptKey);
-                    if (!ret)
-                    {
-                        throw new ApplicationException("설정값을 가져오는데 실패했습니다.");
-                    }
-                }
-                else
-                {
-                    cryptKey = user.Password;
-                }
-                _userSettings.CryptKey = cryptKey;
+                string jsonString = System.IO.File.ReadAllText(filepath);
+                _userSettings = JsonConvert.DeserializeObject<UserSettings>(jsonString);
             }
+            catch (System.IO.DirectoryNotFoundException dirEx)
+            {
+                string message = dirEx.Message;
+                System.IO.Directory.CreateDirectory(GetDataFolder());
+                System.IO.File.CreateText(GetFilepath());
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException(String.Format("환경설정 파일을 읽는 중 오류가 발생했습니다. ({0})", filepath), ex);
+            }
+
+            if (_userSettings == null)
+            {
+                _userSettings = new UserSettings()
+                {
+                    Servers = new System.Collections.Generic.List<ServerInfo>(),
+                    Domains = new System.Collections.Generic.List<DomainInfo>()
+                };
+            }
+
+            string cryptKey = null;
+            var user = Utility.CredentialManagementHelper.GetCredential();
+            if (user == null)
+            {
+                cryptKey = Guid.NewGuid().ToString().Replace("-", "").Substring(0, 32);
+                bool ret = Utility.CredentialManagementHelper.SetCredentials("TransmissionAdd", cryptKey);
+                if (!ret)
+                {
+                    throw new ApplicationException("설정값을 가져오는데 실패했습니다.");
+                }
+            }
+            else
+            {
+                cryptKey = user.Password;
+            }
+            _userSettings.CryptKey = cryptKey;
         }
 
         public static void Save()
         {
             string filepath = GetFilepath();
 
-            lock (_syncLock)
+            try
             {
-                try
-                {
-                    string jsonString = JsonConvert.SerializeObject(_userSettings);
-                    System.IO.File.WriteAllText(filepath, jsonString);
-                }
-                catch (Exception ex)
-                {
-                    throw new ApplicationException(String.Format("환경설정 파일을 저장 중 오류가 발생했습니다. ({0})", filepath), ex);
-                }
+                string jsonString = JsonConvert.SerializeObject(_userSettings, Formatting.Indented);
+                System.IO.File.WriteAllText(filepath, jsonString);
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException(String.Format("환경설정 파일을 저장 중 오류가 발생했습니다. ({0})", filepath), ex);
             }
         }
     }
