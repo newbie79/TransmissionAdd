@@ -31,6 +31,12 @@ namespace TransmissionAdd
                 MessageBox.Show("Transmission Url을 입력해주세요.", "경고", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
+            else if (!tbUrl.Text.Trim().StartsWith("http://", StringComparison.InvariantCultureIgnoreCase)
+                && !tbUrl.Text.Trim().StartsWith("https://", StringComparison.InvariantCultureIgnoreCase))
+            {
+                MessageBox.Show("Transmission Url이 올바르지 않습니다.", "경고", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
             else if (String.IsNullOrWhiteSpace(tbUsername.Text))
             {
                 MessageBox.Show("Username을 입력해주세요.", "경고", MessageBoxButtons.OK, MessageBoxIcon.Warning);

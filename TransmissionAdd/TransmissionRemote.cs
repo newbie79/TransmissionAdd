@@ -30,24 +30,30 @@ namespace TransmissionAdd
             }
 
             UserConfig.Load();
-            if (UserConfig.Settings == null)
+            if (UserConfig.Settings == null || UserConfig.Settings.Servers == null || UserConfig.Settings.Servers.Count == 0)
             {
-                string d = "";
-            }
-
-            Utility.CredentialUser user = Utility.CredentialManagementHelper.GetCredential();
-            if (user == null)
-            {
-                if (!UpdateTransmissionInfo(ref user, out errorMessage))
+                using (var form = new ConfigForm())
                 {
-                    MessageBox.Show(errorMessage,
-                        "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return false;
+                    form.ShowDialog();
                 }
             }
 
+            //Utility.CredentialUser user = Utility.CredentialManagementHelper.GetCredential();
+            //if (user == null)
+            //{
+            //    if (!UpdateTransmissionInfo(ref user, out errorMessage))
+            //    {
+            //        MessageBox.Show(errorMessage,
+            //            "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            //        return false;
+            //    }
+            //}
+
+            ServerInfo serverInfo = new ServerInfo();
+            string password = Utility.Crypto.Decrypt(serverInfo.Password, UserConfig.Settings.CryptKey);
+
             string name = null;
-            int ret = AddMagnetLink(user.Url, user.Username, user.Password, url, out name, out errorMessage);
+            int ret = AddMagnetLink(serverInfo.Url, serverInfo.Username, password, url, out name, out errorMessage);
             if (ret == 0)
             {
                 ToastNotificationForm toastForm = new ToastNotificationForm(name, 5);
@@ -61,14 +67,14 @@ namespace TransmissionAdd
                     MessageBox.Show(errorMessage,
                         "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
-                    if (!UpdateTransmissionInfo(ref user, out errorMessage))
-                    {
-                        MessageBox.Show(errorMessage,
-                            "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return false;
-                    }
+                    //if (!UpdateTransmissionInfo(ref user, out errorMessage))
+                    //{
+                    //    MessageBox.Show(errorMessage,
+                    //        "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    //    return false;
+                    //}
 
-                    ret = AddMagnetLink(user.Url, user.Username, user.Password, url, out name, out errorMessage);
+                    ret = AddMagnetLink(serverInfo.Url, serverInfo.Username, password, url, out name, out errorMessage);
                     if (ret == 0)
                     {
                         ToastNotificationForm toast = new ToastNotificationForm(name, 5);
@@ -91,48 +97,48 @@ namespace TransmissionAdd
             }
         }
 
-        private bool UpdateTransmissionInfo(ref Utility.CredentialUser user, out string errorMessage)
-        {
-            errorMessage = null;
+        //private bool UpdateTransmissionInfo(ref Utility.CredentialUser user, out string errorMessage)
+        //{
+        //    errorMessage = null;
 
-            using (var form = new ServerConfigForm())
-            {
-                if (user != null)
-                {
-                    form.TransmissionUrl = user.Url;
-                    form.Username = user.Username;
-                }
+        //    using (var form = new ServerConfigForm())
+        //    {
+        //        if (user != null)
+        //        {
+        //            form.TransmissionUrl = user.Url;
+        //            form.Username = user.Username;
+        //        }
 
-                var result = form.ShowDialog();
-                if (result == DialogResult.OK)
-                {
-                    try
-                    {
-                        Utility.CredentialManagementHelper.SetCredentials(form.TransmissionUrl, form.Username, form.Password);
-                        user = Utility.CredentialManagementHelper.GetCredential();
-                        if (user != null)
-                        {
-                            return true;
-                        }
-                        else
-                        {
-                            errorMessage = "Transmission 정보를 읽어오는 중 오류가 발생했습니다.";
-                            return false;
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        errorMessage = String.Format("Transmission 정보를 읽어오는 중 오류가 발생했습니다.\n\n{0}", ex.Message);
-                        return false;
-                    }
-                }
-                else
-                {
-                    errorMessage = "Transmission 정보를 입력하지 않으셨습니다.";
-                    return false;
-                }
-            }
-        }
+        //        var result = form.ShowDialog();
+        //        if (result == DialogResult.OK)
+        //        {
+        //            try
+        //            {
+        //                Utility.CredentialManagementHelper.SetCredentials(form.TransmissionUrl, form.Username, form.Password);
+        //                user = Utility.CredentialManagementHelper.GetCredential();
+        //                if (user != null)
+        //                {
+        //                    return true;
+        //                }
+        //                else
+        //                {
+        //                    errorMessage = "Transmission 정보를 읽어오는 중 오류가 발생했습니다.";
+        //                    return false;
+        //                }
+        //            }
+        //            catch (Exception ex)
+        //            {
+        //                errorMessage = String.Format("Transmission 정보를 읽어오는 중 오류가 발생했습니다.\n\n{0}", ex.Message);
+        //                return false;
+        //            }
+        //        }
+        //        else
+        //        {
+        //            errorMessage = "Transmission 정보를 입력하지 않으셨습니다.";
+        //            return false;
+        //        }
+        //    }
+        //}
 
         /// <summary>
         /// 마그넷 링크를 등록한다.

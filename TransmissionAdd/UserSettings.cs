@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace TransmissionAdd
 {
     public class UserSettings
     {
+        [JsonIgnore]
+        public string CryptKey { get; set; }
+
         public List<ServerInfo> Servers { get; set; }
 
         public List<DomainInfo> Domains { get; set; }
