@@ -14,8 +14,6 @@ namespace TransmissionAdd
         /// <returns>결과코드 (0:성공, 10:URL 누락, 11:이미 등록됨, 20:계정 미등록)</returns>
         public bool Add(string url)
         {
-            string errorMessage = null;
-
             if (String.IsNullOrWhiteSpace(url))
             {
                 MessageBox.Show("URL을 입력해주세요.", 
@@ -30,30 +28,63 @@ namespace TransmissionAdd
             }
 
             UserConfig.Load();
-            if (UserConfig.Settings == null || UserConfig.Settings.Servers == null || UserConfig.Settings.Servers.Count == 0)
+
+            return Add_Inner(url);
+        }
+
+        /// <summary>
+        /// 토렌트 링크를 등록한다.
+        /// </summary>
+        /// <param name="url">토렌트 URL</param>
+        /// <returns>결과코드 (0:성공, 10:URL 누락, 11:이미 등록됨, 20:계정 미등록)</returns>
+        private bool Add_Inner(string url, int retry = 1)
+        { 
+            if (retry == 0 || UserConfig.Settings == null || UserConfig.Settings.Servers == null || UserConfig.Settings.Servers.Count == 0)
             {
                 using (var form = new ConfigForm())
                 {
+                    form.ShowServerConfigForm = true;
                     form.ShowDialog();
                 }
             }
 
-            //Utility.CredentialUser user = Utility.CredentialManagementHelper.GetCredential();
-            //if (user == null)
-            //{
-            //    if (!UpdateTransmissionInfo(ref user, out errorMessage))
-            //    {
-            //        MessageBox.Show(errorMessage,
-            //            "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            //        return false;
-            //    }
-            //}
+            if (UserConfig.Settings == null || UserConfig.Settings.Servers == null || UserConfig.Settings.Servers.Count == 0)
+            {
+                MessageBox.Show("등록된 Transmission 사이트가 없습니다.",
+                    "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
 
-            ServerInfo serverInfo = new ServerInfo();
+            ServerInfo serverInfo = null;
+            if (UserConfig.Settings.Servers.Count == 1)
+            {
+                serverInfo = UserConfig.Settings.Servers[0];
+            }
+            else
+            {
+                using (var form = new ServerSelectForm())
+                {
+                    var result = form.ShowDialog();
+
+                    if (result == DialogResult.OK)
+                    {
+                        serverInfo = form.ServerInfo;
+                    }
+                    else
+                    {
+                        MessageBox.Show("작업을 취소하셨습니다.",
+                            "안내", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                        return false;
+                    }
+                }
+            }
+
+            string transmissionUrl = String.Format("{0}/rpc", serverInfo.Url);
             string password = Utility.Crypto.Decrypt(serverInfo.Password, UserConfig.Settings.CryptKey);
-
             string name = null;
-            int ret = AddMagnetLink(serverInfo.Url, serverInfo.Username, password, url, out name, out errorMessage);
+            string errorMessage = null;
+
+            int ret = AddMagnetLink(transmissionUrl, serverInfo.Username, password, url, out name, out errorMessage);
             if (ret == 0)
             {
                 ToastNotificationForm toastForm = new ToastNotificationForm(name, 5);
@@ -62,38 +93,18 @@ namespace TransmissionAdd
             }
             else
             {
-                if (ret == 20) // 환경설정 오류 
+                MessageBox.Show(errorMessage,
+                    "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                if (ret == 20) // 설정 오류 
                 {
-                    MessageBox.Show(errorMessage,
-                        "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-                    //if (!UpdateTransmissionInfo(ref user, out errorMessage))
-                    //{
-                    //    MessageBox.Show(errorMessage,
-                    //        "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    //    return false;
-                    //}
-
-                    ret = AddMagnetLink(serverInfo.Url, serverInfo.Username, password, url, out name, out errorMessage);
-                    if (ret == 0)
+                    if (retry-- > 0)
                     {
-                        ToastNotificationForm toast = new ToastNotificationForm(name, 5);
-                        toast.ShowDialog();
-                        return true;
-                    }
-                    else
-                    {
-                        MessageBox.Show(errorMessage,
-                            "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return false;
+                        return Add_Inner(url, retry);
                     }
                 }
-                else
-                {
-                    MessageBox.Show(errorMessage,
-                        "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return false;
-                }
+
+                return false;
             }
         }
 

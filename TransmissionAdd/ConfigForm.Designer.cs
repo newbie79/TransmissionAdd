@@ -42,32 +42,29 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(25, 13);
-            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label1.Location = new System.Drawing.Point(36, 22);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(43, 15);
+            this.label1.Size = new System.Drawing.Size(52, 25);
             this.label1.TabIndex = 3;
-            this.label1.Text = "Server:";
+            this.label1.Text = "서버:";
             // 
             // lbServer
             // 
             this.lbServer.DisplayMember = "Name";
             this.lbServer.FormattingEnabled = true;
-            this.lbServer.ItemHeight = 15;
-            this.lbServer.Location = new System.Drawing.Point(88, 13);
-            this.lbServer.Margin = new System.Windows.Forms.Padding(2);
+            this.lbServer.ItemHeight = 25;
+            this.lbServer.Location = new System.Drawing.Point(177, 22);
             this.lbServer.Name = "lbServer";
-            this.lbServer.Size = new System.Drawing.Size(528, 124);
+            this.lbServer.Size = new System.Drawing.Size(702, 204);
             this.lbServer.TabIndex = 4;
             this.lbServer.ValueMember = "ServerId";
             this.lbServer.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lbServer_MouseDown);
             // 
             // btnServerAdd
             // 
-            this.btnServerAdd.Location = new System.Drawing.Point(530, 139);
-            this.btnServerAdd.Margin = new System.Windows.Forms.Padding(2);
+            this.btnServerAdd.Location = new System.Drawing.Point(757, 232);
             this.btnServerAdd.Name = "btnServerAdd";
-            this.btnServerAdd.Size = new System.Drawing.Size(84, 29);
+            this.btnServerAdd.Size = new System.Drawing.Size(120, 48);
             this.btnServerAdd.TabIndex = 7;
             this.btnServerAdd.Text = "추가";
             this.btnServerAdd.UseVisualStyleBackColor = true;
@@ -75,50 +72,50 @@
             // 
             // btnDomainAdd
             // 
-            this.btnDomainAdd.Location = new System.Drawing.Point(530, 316);
-            this.btnDomainAdd.Margin = new System.Windows.Forms.Padding(2);
+            this.btnDomainAdd.Location = new System.Drawing.Point(757, 527);
             this.btnDomainAdd.Name = "btnDomainAdd";
-            this.btnDomainAdd.Size = new System.Drawing.Size(84, 29);
+            this.btnDomainAdd.Size = new System.Drawing.Size(120, 48);
             this.btnDomainAdd.TabIndex = 10;
             this.btnDomainAdd.Text = "추가";
             this.btnDomainAdd.UseVisualStyleBackColor = true;
+            this.btnDomainAdd.Click += new System.EventHandler(this.btnDomainAdd_Click);
             // 
             // lbDomain
             // 
             this.lbDomain.DisplayMember = "Url";
             this.lbDomain.FormattingEnabled = true;
-            this.lbDomain.ItemHeight = 15;
-            this.lbDomain.Location = new System.Drawing.Point(88, 190);
-            this.lbDomain.Margin = new System.Windows.Forms.Padding(2);
+            this.lbDomain.ItemHeight = 25;
+            this.lbDomain.Location = new System.Drawing.Point(177, 317);
             this.lbDomain.Name = "lbDomain";
-            this.lbDomain.Size = new System.Drawing.Size(528, 124);
+            this.lbDomain.Size = new System.Drawing.Size(702, 204);
             this.lbDomain.TabIndex = 9;
             this.lbDomain.ValueMember = "Url";
+            this.lbDomain.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lbDomain_MouseDown);
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(25, 190);
-            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label2.Location = new System.Drawing.Point(36, 317);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(53, 15);
+            this.label2.Size = new System.Drawing.Size(112, 25);
             this.label2.TabIndex = 8;
-            this.label2.Text = "Domain:";
+            this.label2.Text = "검색 사이트:";
             // 
             // groupBox1
             // 
-            this.groupBox1.Location = new System.Drawing.Point(12, 356);
+            this.groupBox1.Location = new System.Drawing.Point(17, 593);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(619, 8);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.groupBox1.Size = new System.Drawing.Size(884, 13);
             this.groupBox1.TabIndex = 11;
             this.groupBox1.TabStop = false;
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(530, 377);
-            this.btnCancel.Margin = new System.Windows.Forms.Padding(2);
+            this.btnCancel.Location = new System.Drawing.Point(757, 628);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(84, 29);
+            this.btnCancel.Size = new System.Drawing.Size(120, 48);
             this.btnCancel.TabIndex = 13;
             this.btnCancel.Text = "취소";
             this.btnCancel.UseVisualStyleBackColor = true;
@@ -126,10 +123,9 @@
             // 
             // btnOK
             // 
-            this.btnOK.Location = new System.Drawing.Point(441, 377);
-            this.btnOK.Margin = new System.Windows.Forms.Padding(2);
+            this.btnOK.Location = new System.Drawing.Point(630, 628);
             this.btnOK.Name = "btnOK";
-            this.btnOK.Size = new System.Drawing.Size(84, 29);
+            this.btnOK.Size = new System.Drawing.Size(120, 48);
             this.btnOK.TabIndex = 12;
             this.btnOK.Text = "확인";
             this.btnOK.UseVisualStyleBackColor = true;
@@ -137,9 +133,9 @@
             // 
             // ConfigForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(643, 417);
+            this.ClientSize = new System.Drawing.Size(919, 695);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOK);
             this.Controls.Add(this.groupBox1);
@@ -149,7 +145,8 @@
             this.Controls.Add(this.btnServerAdd);
             this.Controls.Add(this.lbServer);
             this.Controls.Add(this.label1);
-            this.Margin = new System.Windows.Forms.Padding(2);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "ConfigForm";
             this.Text = "TransmissionAdd 설정";
             this.Load += new System.EventHandler(this.ConfigForm_Load);

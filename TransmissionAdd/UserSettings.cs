@@ -29,7 +29,7 @@ namespace TransmissionAdd
 
     public class DomainInfo
     {
-        public string Url { get; set; }
+        public string Domain { get; set; }
 
         public string ServerId { get; set; }
     }

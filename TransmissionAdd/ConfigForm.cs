@@ -15,8 +15,10 @@ namespace TransmissionAdd
     {
         private bool _dataChanged = false;
         private ContextMenuStrip _lbServerContextMenu;
+        private ContextMenuStrip _lbDomainContextMenu;
         private List<ServerInfo> _servers = null;
         private List<DomainInfo> _domains = null;
+        public bool ShowServerConfigForm { get; set; }
 
         public ConfigForm()
         {
@@ -33,6 +35,15 @@ namespace TransmissionAdd
             _lbServerContextMenu = new ContextMenuStrip();
             _lbServerContextMenu.Items.AddRange(new ToolStripItem[] { lbServerEditMenu, lbServerDelMenu });
             lbServer.ContextMenuStrip= _lbServerContextMenu;
+
+            // lbDomain Context menu
+            var lbDomainEditMenu = new ToolStripMenuItem { Text = "수정" };
+            lbDomainEditMenu.Click += lbDomainEditMenu_Click;
+            var lbDomainDelMenu = new ToolStripMenuItem { Text = "삭제" };
+            lbDomainDelMenu.Click += lbDomainDelMenu_Click;
+            _lbDomainContextMenu = new ContextMenuStrip();
+            _lbDomainContextMenu.Items.AddRange(new ToolStripItem[] { lbDomainEditMenu, lbDomainDelMenu });
+            lbDomain.ContextMenuStrip = _lbDomainContextMenu;
 
             UserConfig.Load();
 
@@ -54,11 +65,12 @@ namespace TransmissionAdd
                         lbServer.Items.Add(serverInfo);
                     }
                 }
+
                 if (UserConfig.Settings.Domains != null)
                 {
                     _domains = UserConfig.Settings.Domains.ConvertAll(x => new DomainInfo()
                     {
-                        Url = x.Url,
+                        Domain = x.Domain,
                         ServerId = x.ServerId
                     });
 
@@ -66,6 +78,15 @@ namespace TransmissionAdd
                     {
                         lbDomain.Items.Add(domainInfo);
                     }
+                }
+            }
+
+            if (this.ShowServerConfigForm)
+            {
+                var serverInfo = UpdateServer(null);
+                if (serverInfo != null)
+                {
+                    lbServer.Items.Add(serverInfo);
                 }
             }
         }
@@ -89,14 +110,13 @@ namespace TransmissionAdd
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void lbServerEditMenu_Click(object sender, EventArgs e)
         {
-            int index = lbServer.SelectedIndex;
-            if (index >= 0)
+            var serverInfo = lbServer.SelectedItem as ServerInfo;
+            if (serverInfo != null)
             {
-                string serverId = lbServer.SelectedValue.ToString();
-                var serverInfo = UpdateServer(serverId);
-                if (serverInfo != null)
+                var newServerInfo = UpdateServer(serverInfo);
+                if (newServerInfo != null)
                 {
-                    lbServer.Text = serverInfo.Name;
+                    lbServer.Items[lbServer.SelectedIndex] = newServerInfo;
                 }
             }
         }
@@ -108,13 +128,58 @@ namespace TransmissionAdd
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void lbServerDelMenu_Click(object sender, EventArgs e)
         {
-            int index = lbServer.SelectedIndex;
-            if (index >= 0)
+            var serverInfo = lbServer.SelectedItem as ServerInfo;
+            if (serverInfo != null)
             {
-                lbServer.Items.RemoveAt(index);
-                string serverId = lbServer.SelectedValue.ToString();
-                int itemIndex = _servers.FindIndex(x => serverId.Equals(x.ServerId));
-                _servers.RemoveAt(itemIndex);
+                lbServer.Items.Remove(serverInfo);
+                _servers.Remove(serverInfo);
+                _dataChanged = true;
+            }
+        }
+
+        private void lbDomain_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                lbDomain.SelectedIndex = lbDomain.IndexFromPoint(e.Location);
+                if (lbDomain.SelectedIndex != -1)
+                {
+                    _lbDomainContextMenu.Show();
+                }
+            }
+        }
+
+        /// <summary>
+        /// 도메인 정보 수정 이벤트 핸들러
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        private void lbDomainEditMenu_Click(object sender, EventArgs e)
+        {
+            var domainInfo = lbDomain.SelectedItem as DomainInfo;
+            if (domainInfo != null)
+            {
+                var newDomainInfo = UpdateDomain(domainInfo);
+                if (newDomainInfo != null)
+                {
+                    lbDomain.Items[lbDomain.SelectedIndex] = newDomainInfo;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 도메인 정보 삭제 이벤트 핸들러
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        private void lbDomainDelMenu_Click(object sender, EventArgs e)
+        {
+            var domainInfo = lbDomain.SelectedItem as DomainInfo;
+            if (domainInfo != null)
+            {
+                lbDomain.Items.Remove(domainInfo);
+                _domains.Remove(domainInfo);
+                _dataChanged = true;
             }
         }
 
@@ -127,20 +192,20 @@ namespace TransmissionAdd
             }
         }
 
-        private ServerInfo UpdateServer(string serverId)
+        private ServerInfo UpdateServer(ServerInfo serverInfo)
         {
             using (var form = new ServerConfigForm())
             {
-                if (serverId != null)
+                if (serverInfo != null)
                 {
-                    form.ServerInfo = _servers.Find(x => x.ServerId.Equals(serverId));
+                    form.ServerInfo = serverInfo;
                 }
                 var result = form.ShowDialog();
 
                 if (result == DialogResult.OK)
                 {
                     _dataChanged = true;
-                    if (String.IsNullOrWhiteSpace(serverId))
+                    if (serverInfo == null)
                     {
                         _servers.Add(form.ServerInfo);
                     }
@@ -170,6 +235,42 @@ namespace TransmissionAdd
         {
             this.DialogResult = DialogResult.Cancel;
             this.Close();
+        }
+
+        private void btnDomainAdd_Click(object sender, EventArgs e)
+        {
+            var domainInfo = UpdateDomain(null);
+            if (domainInfo != null)
+            {
+                lbDomain.Items.Add(domainInfo);
+            }
+        }
+
+        private DomainInfo UpdateDomain(DomainInfo domainInfo)
+        {
+            using (var form = new DomainConfigForm())
+            {
+                form.Servers = _servers;
+                if (domainInfo != null)
+                {
+                    form.DomainInfo = domainInfo;
+                }
+                var result = form.ShowDialog();
+
+                if (result == DialogResult.OK)
+                {
+                    _dataChanged = true;
+                    if (domainInfo == null)
+                    {
+                        _domains.Add(form.DomainInfo);
+                    }
+                    return form.DomainInfo;
+                }
+                else
+                {
+                    return null;
+                }
+            }
         }
     }
 }

@@ -37,6 +37,12 @@ namespace TransmissionAdd
                 MessageBox.Show("Transmission Url이 올바르지 않습니다.", "경고", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
+            else if (!tbUrl.Text.Trim().EndsWith("/transmission/", StringComparison.InvariantCultureIgnoreCase)
+                && !tbUrl.Text.Trim().EndsWith("/transmission", StringComparison.InvariantCultureIgnoreCase))
+            {
+                MessageBox.Show("Transmission Url이 올바르지 않습니다.", "경고", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
             else if (String.IsNullOrWhiteSpace(tbUsername.Text))
             {
                 MessageBox.Show("Username을 입력해주세요.", "경고", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -54,7 +60,7 @@ namespace TransmissionAdd
                 {
                     ServerId = Guid.NewGuid().ToString(),
                     Name = tbName.Text.Trim(),
-                    Url = tbUrl.Text.Trim(),
+                    Url = tbUrl.Text.Trim().TrimEnd('/'),
                     Username = tbUsername.Text.Trim(),
                     Password = Utility.Crypto.Encrypt(tbPassword.Text.Trim(), UserConfig.Settings.CryptKey)
                 };
@@ -62,7 +68,7 @@ namespace TransmissionAdd
             else
             {
                 this.ServerInfo.Name = tbName.Text.Trim();
-                this.ServerInfo.Url = tbUrl.Text.Trim();
+                this.ServerInfo.Url = tbUrl.Text.Trim().TrimEnd('/');
                 this.ServerInfo.Username = tbUsername.Text.Trim();
                 this.ServerInfo.Password = Utility.Crypto.Encrypt(tbPassword.Text.Trim(), UserConfig.Settings.CryptKey);
             }
