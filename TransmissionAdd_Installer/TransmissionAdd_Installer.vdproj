@@ -19,6 +19,12 @@
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
+        "Entry"
+        {
+        "MsmKey" = "8:_B8C17016CE884A9A9F2ED66406426738"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
     }
     "Configurations"
     {
@@ -121,6 +127,26 @@
         }
         "File"
         {
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B8C17016CE884A9A9F2ED66406426738"
+            {
+            "SourcePath" = "8:..\\TransmissionAdd\\user.json"
+            "TargetName" = "8:user.json"
+            "Tag" = "8:"
+            "Folder" = "8:_B5B4D1D93C1A4C8685160C3A95747E4A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
         }
         "FileType"
         {
@@ -134,6 +160,18 @@
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Property" = "8:ProgramMenuFolder"
+                "Folders"
+                {
+                }
+            }
+            "{994432C3-9487-495D-8656-3E829A8DBDDE}:_B5B4D1D93C1A4C8685160C3A95747E4A"
+            {
+            "DefaultLocation" = "8:[LocalAppDataFolder][ProductName]"
+            "Name" = "8:User's Local Application Data Folder"
+            "AlwaysCreate" = "11:FALSE"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Property" = "8:NEWPROPERTY1"
                 "Folders"
                 {
                 }
@@ -178,7 +216,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:TransmissionAdd"
         "ProductCode" = "8:{A99AA058-FE72-49C1-829E-757C60A94930}"
-        "PackageCode" = "8:{55A6972A-846A-4C50-9F06-A7DAA6EFFC6E}"
+        "PackageCode" = "8:{590DA294-7F01-4254-949D-47DEA0EAA52F}"
         "UpgradeCode" = "8:{21749094-2895-4FC5-BAF8-86E366DCF09D}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"

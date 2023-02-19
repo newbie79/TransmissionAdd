@@ -58,7 +58,7 @@
             this.btnOK.Location = new System.Drawing.Point(458, 118);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(120, 48);
-            this.btnOK.TabIndex = 6;
+            this.btnOK.TabIndex = 2;
             this.btnOK.Text = "확인";
             this.btnOK.UseVisualStyleBackColor = true;
             this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
@@ -74,6 +74,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "ServerSelectForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Server 선택";
             this.Load += new System.EventHandler(this.ServerSelectForm_Load);
             this.ResumeLayout(false);

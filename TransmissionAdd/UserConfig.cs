@@ -22,7 +22,7 @@ namespace TransmissionAdd
 
         private static string GetFilepath()
         {
-            return String.Format("{0}\\data.json", GetDataFolder());
+            return String.Format("{0}\\user.json", GetDataFolder());
         }
 
         public static void Load()

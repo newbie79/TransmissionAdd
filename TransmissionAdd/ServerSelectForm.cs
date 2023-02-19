@@ -22,6 +22,7 @@ namespace TransmissionAdd
         private void ServerSelectForm_Load(object sender, EventArgs e)
         {
             cbServers.DataSource = UserConfig.Settings.Servers;
+            btnOK.Focus();
         }
 
         private void btnOK_Click(object sender, EventArgs e)

@@ -12,6 +12,8 @@ namespace TransmissionAdd
         public List<ServerInfo> Servers { get; set; }
 
         public List<DomainInfo> Domains { get; set; }
+
+        public string LastServerId { get; set; }
     }
 
     public class ServerInfo

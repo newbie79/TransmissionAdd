@@ -79,6 +79,9 @@ namespace TransmissionAdd
                 }
             }
 
+            UserConfig.Settings.LastServerId = serverInfo.ServerId;
+            UserConfig.Save();
+
             string transmissionUrl = String.Format("{0}/rpc", serverInfo.Url);
             string password = Utility.Crypto.Decrypt(serverInfo.Password, UserConfig.Settings.CryptKey);
             string name = null;
@@ -108,53 +111,10 @@ namespace TransmissionAdd
             }
         }
 
-        //private bool UpdateTransmissionInfo(ref Utility.CredentialUser user, out string errorMessage)
-        //{
-        //    errorMessage = null;
-
-        //    using (var form = new ServerConfigForm())
-        //    {
-        //        if (user != null)
-        //        {
-        //            form.TransmissionUrl = user.Url;
-        //            form.Username = user.Username;
-        //        }
-
-        //        var result = form.ShowDialog();
-        //        if (result == DialogResult.OK)
-        //        {
-        //            try
-        //            {
-        //                Utility.CredentialManagementHelper.SetCredentials(form.TransmissionUrl, form.Username, form.Password);
-        //                user = Utility.CredentialManagementHelper.GetCredential();
-        //                if (user != null)
-        //                {
-        //                    return true;
-        //                }
-        //                else
-        //                {
-        //                    errorMessage = "Transmission 정보를 읽어오는 중 오류가 발생했습니다.";
-        //                    return false;
-        //                }
-        //            }
-        //            catch (Exception ex)
-        //            {
-        //                errorMessage = String.Format("Transmission 정보를 읽어오는 중 오류가 발생했습니다.\n\n{0}", ex.Message);
-        //                return false;
-        //            }
-        //        }
-        //        else
-        //        {
-        //            errorMessage = "Transmission 정보를 입력하지 않으셨습니다.";
-        //            return false;
-        //        }
-        //    }
-        //}
-
         /// <summary>
         /// 마그넷 링크를 등록한다.
         /// </summary>
-        /// <param name="transmissionUrl">transmissoin url</param>
+        /// <param name="transmissionUrl">transmission url</param>
         /// <param name="username">username</param>
         /// <param name="password">password</param>
         /// <param name="magnetLink">magnet link</param>
