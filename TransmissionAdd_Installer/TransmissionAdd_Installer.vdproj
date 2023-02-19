@@ -238,15 +238,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:TransmissionAdd"
-        "ProductCode" = "8:{A99AA058-FE72-49C1-829E-757C60A94930}"
-        "PackageCode" = "8:{590DA294-7F01-4254-949D-47DEA0EAA52F}"
+        "ProductCode" = "8:{146C679C-658F-4F21-82B6-2FD98916D850}"
+        "PackageCode" = "8:{8B2BFC00-ABFF-449F-A440-602EB4F87C5D}"
         "UpgradeCode" = "8:{21749094-2895-4FC5-BAF8-86E366DCF09D}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:FALSE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.0.0"
+        "ProductVersion" = "8:1.0.2"
         "Manufacturer" = "8:newbie79"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
@@ -868,7 +868,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_9A8988A5A54F45288959AEE87658324F"
             {
-            "SourcePath" = "8:..\\TransmissionAdd\\obj\\Debug\\net6.0-windows\\apphost.exe"
+            "SourcePath" = "8:..\\TransmissionAdd\\obj\\Release\\net6.0-windows\\apphost.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_F0450A769DFD48D8A479F3337624EF32"
