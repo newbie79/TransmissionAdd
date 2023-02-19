@@ -150,6 +150,29 @@
         }
         "FileType"
         {
+            "{5EB83D71-FA18-4901-BE56-DE22E13CC478}:_C9093E8AF7734C09A27AFC26F00C520B"
+            {
+            "Name" = "8:Torrent"
+            "Description" = "8:"
+            "Extensions" = "8:.torrent"
+            "MIME" = "8:"
+            "Icon" = "8:"
+            "IconIndex" = "3:0"
+                "Command"
+                {
+                "Command" = "8:_9A8988A5A54F45288959AEE87658324F"
+                }
+                "Verbs"
+                {
+                    "{95C0C507-CBF0-42B8-B119-07219E384A4A}:_0B133C3F36D641B5872A7ECB7E429114"
+                    {
+                    "Command" = "8:&Open"
+                    "Verb" = "8:open"
+                    "Arguments" = "8:\"%1\""
+                    "Order" = "3:0"
+                    }
+                }
+            }
         }
         "Folder"
         {
@@ -845,7 +868,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_9A8988A5A54F45288959AEE87658324F"
             {
-            "SourcePath" = "8:..\\TransmissionAdd\\obj\\Release\\net6.0-windows\\apphost.exe"
+            "SourcePath" = "8:..\\TransmissionAdd\\obj\\Debug\\net6.0-windows\\apphost.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_F0450A769DFD48D8A479F3337624EF32"

@@ -2,7 +2,7 @@
   "profiles": {
     "TransmissionAdd": {
       "commandName": "Project",
-      "commandLineArgs": "magnet:?xt=urn:btih:5e5d8c95f21982d82aa8396006eeb6b104b8f164"
+      "commandLineArgs": "C:\\Users\\newbi\\Downloads\\test.torrent"
     }
   }
 }
