@@ -2,6 +2,9 @@
 ## 목적
 웹브라우저에서 Magnet Link 클릭 시 Transmission 웹사이트에 등록합니다.
 ## 다운로드
+Ver 1.0.3  
+- 최종 선택 서버 유지    
+
 Ver 1.0.2 ([다운로드](https://github.com/newbie79/TransmissionAdd/releases/tag/Tag_202302192))  
 - .torrent 파일 연결  
   

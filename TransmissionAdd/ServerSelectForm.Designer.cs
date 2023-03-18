@@ -52,6 +52,7 @@
             this.cbServers.Size = new System.Drawing.Size(539, 33);
             this.cbServers.TabIndex = 1;
             this.cbServers.ValueMember = "ServerId";
+            this.cbServers.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.cbServers_KeyPress);
             // 
             // btnOK
             // 
