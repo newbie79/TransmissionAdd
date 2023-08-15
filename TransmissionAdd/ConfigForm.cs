@@ -34,7 +34,7 @@ namespace TransmissionAdd
             lbServerDelMenu.Click += lbServerDelMenu_Click;
             _lbServerContextMenu = new ContextMenuStrip();
             _lbServerContextMenu.Items.AddRange(new ToolStripItem[] { lbServerEditMenu, lbServerDelMenu });
-            lbServer.ContextMenuStrip= _lbServerContextMenu;
+            lbServer.ContextMenuStrip = _lbServerContextMenu;
 
             // lbDomain Context menu
             var lbDomainEditMenu = new ToolStripMenuItem { Text = "수정" };
